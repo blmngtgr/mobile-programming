@@ -9,6 +9,7 @@ import com.example.mobile_programming_teamproject.DBKey.Companion.CHILD_CHAT
 import com.example.mobile_programming_teamproject.DBKey.Companion.DB_ARTICLES
 import com.example.mobile_programming_teamproject.DBKey.Companion.DB_USERS
 import com.example.mobile_programming_teamproject.R
+import com.example.mobile_programming_teamproject.chatList.ChatListItem
 import com.example.mobile_programming_teamproject.databinding.FragmentHomeBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -33,12 +34,22 @@ class Home : Fragment(R.layout.fragment_home) {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
             val articleModel = snapshot.getValue(ArticleModel::class.java)
             articleModel ?: return
+            articleModel.articleKey = snapshot.key
 
             articleList.add(articleModel)
             articleAdapter.submitList(articleList)
         }
 
-        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {}
+        override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+            val articleModel = snapshot.getValue(ArticleModel::class.java) ?: return
+            articleModel.articleKey = snapshot.key
+
+            val position = articleList.indexOfFirst { it.articleKey == articleModel.articleKey }
+            if (position > -1) {
+                articleList[position] = articleModel
+                articleAdapter.notifyItemChanged(position)
+            }
+        }
         override fun onChildRemoved(snapshot: DataSnapshot) {}
         override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
         override fun onCancelled(error: DatabaseError) {}
@@ -65,7 +76,7 @@ class Home : Fragment(R.layout.fragment_home) {
                         buyerId = auth.currentUser!!.uid,
                         sellerId = articleModel.sellerID,
                         itemTitle = articleModel.title,
-                        key = System.currentTimeMillis()
+                        key = System.currentTimeMillis(),
                     )
 
                     userDB.child(auth.currentUser!!.uid)
@@ -81,7 +92,10 @@ class Home : Fragment(R.layout.fragment_home) {
                     Snackbar.make(view,"채팅방이 생성되었습니다.", Snackbar.LENGTH_LONG).show()
                 }
                 else { //내가 올린 아이템일 때
-                    Snackbar.make(view, "내가 올린 아이템 입니다.", Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(view, "수정 페이지로 이동합니다.", Snackbar.LENGTH_LONG).show()
+                    val intent = Intent(requireContext(), EditArticleActivity::class.java)
+                    intent.putExtra("articleKey", articleModel.articleKey)
+                    startActivity(intent)
                 }
                 }
             else { //로그인하지 않은 상태
