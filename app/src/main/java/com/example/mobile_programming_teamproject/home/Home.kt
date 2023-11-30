@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mobile_programming_teamproject.DBKey
 import com.example.mobile_programming_teamproject.DBKey.Companion.CHILD_CHAT
 import com.example.mobile_programming_teamproject.DBKey.Companion.DB_ARTICLES
 import com.example.mobile_programming_teamproject.DBKey.Companion.DB_USERS
@@ -72,32 +73,24 @@ class Home : Fragment(R.layout.fragment_home) {
         articleAdapter = ArticleAdapter(onItemClicked = { articleModel->
             if(auth.currentUser != null) { // 로그인 상태
                 if(auth.currentUser!!.uid != articleModel.sellerID) {
-                    val chatRoom = ChatListItem(
-                        buyerId = auth.currentUser!!.uid,
-                        sellerId = articleModel.sellerID,
-                        itemTitle = articleModel.title,
-                        key = System.currentTimeMillis(),
-                    )
-
-                    userDB.child(auth.currentUser!!.uid)
-                        .child(CHILD_CHAT)
-                        .push()
-                        .setValue(chatRoom)
-
-                    userDB.child(articleModel.sellerID)
-                        .child(CHILD_CHAT)
-                        .push()
-                        .setValue(chatRoom)
-
-                    Snackbar.make(view,"채팅방이 생성되었습니다.", Snackbar.LENGTH_LONG).show()
-                }
-                else { //내가 올린 아이템일 때
-                    Snackbar.make(view, "수정 페이지로 이동합니다.", Snackbar.LENGTH_LONG).show()
-                    val intent = Intent(requireContext(), EditArticleActivity::class.java)
+                    val intent = Intent(requireContext(), DetailItemActivity::class.java)
                     intent.putExtra("articleKey", articleModel.articleKey)
+                    intent.putExtra("title", articleModel.title)
+                    intent.putExtra("price", articleModel.price)
+                    intent.putExtra("sellerID", articleModel.sellerID)
+                    intent.putExtra("status", articleModel.status)
                     startActivity(intent)
                 }
+                else { //내가 올린 아이템일 때
+                    val intent = Intent(requireContext(), MyDetailItemActivity::class.java)
+                    intent.putExtra("articleKey", articleModel.articleKey)
+                    intent.putExtra("title", articleModel.title)
+                    intent.putExtra("price", articleModel.price)
+                    intent.putExtra("sellerID", articleModel.sellerID)
+                    intent.putExtra("status", articleModel.status)
+                    startActivity(intent)
                 }
+            }
             else { //로그인하지 않은 상태
                 Snackbar.make(view, "회원만 이용 가능합니다.", Snackbar.LENGTH_LONG).show()
             }
@@ -116,6 +109,25 @@ class Home : Fragment(R.layout.fragment_home) {
             }
         }
         articleDB.addChildEventListener(listener)
+
+        fragmentHoneBinding.radioAll.setOnClickListener {
+            loadAllArticles() // 모든 판매 여부 항목을 표시하는 함수 호출
+        }
+
+        fragmentHoneBinding.radioSale.setOnClickListener {
+            loadSaleArticles() // 판매 여부가 false인 항목만 표시하는 함수 호출
+        }
+
+        loadAllArticles()
+    }
+
+    private fun loadAllArticles() {
+        articleAdapter.submitList(articleList) // 모든 판매 항목을 RecyclerView에 전달
+    }
+
+    private fun loadSaleArticles() {
+        val saleArticleList = articleList.filter { !it.status } // 판매 여부가 false인 항목만 필터링
+        articleAdapter.submitList(saleArticleList) // 필터링된 항목을 RecyclerView에 전달
     }
 
     override fun onResume() {

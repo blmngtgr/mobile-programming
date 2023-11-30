@@ -6,7 +6,8 @@ data class ArticleModel(
     val createdAt: Long,
     val price: String,
     val imageURL: String,
-    var articleKey: String? = null
+    val status: Boolean,
+    var articleKey: String? = null,
 ){
-    constructor(): this("","",0,"","", "")
+    constructor(): this("","",0,"","", false, "")
 }

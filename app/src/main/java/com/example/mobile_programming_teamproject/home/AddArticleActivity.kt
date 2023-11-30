@@ -67,12 +67,12 @@ class AddArticleActivity : AppCompatActivity() {
 
              if(selectedUri != null) {
                  val PhotoUri = selectedUri ?: return@setOnClickListener
-                 uploadPhoto(PhotoUri, successHandler = { uri -> uploadArticle(sellerId, title, price, uri)},
+                 uploadPhoto(PhotoUri, successHandler = { uri -> uploadArticle(sellerId, title, price, uri, false)},
                  errorHandler = { Toast.makeText(this, "사진 업로드에 실패했습니다.", Toast.LENGTH_SHORT)
                  hideProgress()})
              }
              else {
-                 uploadArticle(sellerId, title, price, "")
+                 uploadArticle(sellerId, title, price, "", false)
              }
          }
     }
@@ -92,8 +92,8 @@ class AddArticleActivity : AppCompatActivity() {
             }
         }
     }
-    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String) {
-        val model = ArticleModel(sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl)
+    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String, status: Boolean) {
+        val model = ArticleModel(sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl, status)
         articleDB.push().setValue(model)
 
         hideProgress()

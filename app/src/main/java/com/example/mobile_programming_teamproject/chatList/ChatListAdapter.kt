@@ -2,8 +2,8 @@ package com.example.mobile_programming_teamproject.chatList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mobile_programming_teamproject.databinding.ItemChatListBinding
 

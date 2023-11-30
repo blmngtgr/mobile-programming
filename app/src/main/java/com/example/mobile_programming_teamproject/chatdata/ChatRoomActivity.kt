@@ -64,8 +64,8 @@ class ChatRoomActivity : AppCompatActivity() {
 
             chatDB?.push()?.setValue(chatItem)
         }
-    })
-
-
     }
+
+
 }
+
