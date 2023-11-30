@@ -27,6 +27,7 @@
             android:exported="true">
 
         </activity>
+        <activity android:name=".home.AddArticleActivity"/>
         <activity android:name=".home.MyDetailItemActivity" />
         <activity android:name=".home.DetailItemActivity" />
         <activity android:name=".home.EditArticleActivity"/>
