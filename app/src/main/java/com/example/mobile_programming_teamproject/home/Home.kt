@@ -118,7 +118,7 @@ class Home : Fragment(R.layout.fragment_home) {
             loadSaleArticles() // 판매 여부가 false인 항목만 표시하는 함수 호출
         }
 
-        loadAllArticles()
+        //loadAllArticles()
     }
 
     private fun loadAllArticles() {
@@ -138,5 +138,6 @@ class Home : Fragment(R.layout.fragment_home) {
     override fun onDestroyView() {
         super.onDestroyView()
         articleDB.removeEventListener(listener)
+
     }
 }

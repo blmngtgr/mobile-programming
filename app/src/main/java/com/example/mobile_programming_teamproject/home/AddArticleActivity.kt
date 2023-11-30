@@ -43,21 +43,21 @@ class AddArticleActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_article)
 
-        findViewById<Button>(R.id.imageAddButton).setOnClickListener {
-            when {
-                ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED -> {
-                            startContentProvider()
-                        }
-                shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE) -> {
-                    showPermissionContextPopup()
-                }
-
-                else -> {
-                    requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1010)
-                }
-            }
-        }
+//        findViewById<Button>(R.id.imageAddButton).setOnClickListener {
+//            when {
+//                ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)
+//                        == PackageManager.PERMISSION_GRANTED -> {
+//                            startContentProvider()
+//                        }
+//                shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE) -> {
+//                    showPermissionContextPopup()
+//                }
+//
+//                else -> {
+//                    requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1010)
+//                }
+//            }
+//        }
          findViewById<Button>(R.id.submitButton).setOnClickListener {
              val title = findViewById<EditText>(R.id.titleEditText).text.toString().orEmpty()
              val price = findViewById<EditText>(R.id.priceEditText).text.toString().orEmpty()
