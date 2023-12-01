@@ -61,18 +61,19 @@ class AddArticleActivity : AppCompatActivity() {
          findViewById<Button>(R.id.submitButton).setOnClickListener {
              val title = findViewById<EditText>(R.id.titleEditText).text.toString().orEmpty()
              val price = findViewById<EditText>(R.id.priceEditText).text.toString().orEmpty()
+             val content = findViewById<EditText>(R.id.contentEditText).text.toString().orEmpty()
              val sellerId = auth.currentUser?.uid.orEmpty()
 
              showProgress()
 
              if(selectedUri != null) {
                  val PhotoUri = selectedUri ?: return@setOnClickListener
-                 uploadPhoto(PhotoUri, successHandler = { uri -> uploadArticle(sellerId, title, price, uri, false)},
+                 uploadPhoto(PhotoUri, successHandler = { uri -> uploadArticle(sellerId, title, content, price, uri, false)},
                  errorHandler = { Toast.makeText(this, "사진 업로드에 실패했습니다.", Toast.LENGTH_SHORT)
                  hideProgress()})
              }
              else {
-                 uploadArticle(sellerId, title, price, "", false)
+                 uploadArticle(sellerId, title, content, price, "", false)
              }
          }
     }
@@ -92,8 +93,8 @@ class AddArticleActivity : AppCompatActivity() {
             }
         }
     }
-    private fun uploadArticle(sellerId: String, title: String, price: String, imageUrl: String, status: Boolean) {
-        val model = ArticleModel(sellerId, title, System.currentTimeMillis(), "$price 원", imageUrl, status)
+    private fun uploadArticle(sellerId: String, title: String, content: String, price: String, imageUrl: String, status: Boolean) {
+        val model = ArticleModel(sellerId, title, content, System.currentTimeMillis(), "$price 원", imageUrl, status)
         articleDB.push().setValue(model)
 
         hideProgress()
