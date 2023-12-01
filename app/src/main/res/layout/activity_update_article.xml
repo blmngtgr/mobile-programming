@@ -44,7 +44,7 @@
         android:hint="글 제목"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/radioStatus" />
 
     <EditText
         android:id="@+id/priceEditText"
@@ -56,6 +56,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleEditText" />
+
+    <EditText
+        android:id="@+id/contentEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:hint="내용"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/priceEditText" />
 
     <!--    Button은 theme에 의해 배경색이 고정된 컴포넌트이므로 배경색을 바꾸려면 background가 아니라 backgroundTint를 바꿔줘야 적용됨-->
     <Button
@@ -85,9 +95,12 @@
         android:id="@+id/radioStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:text="판매완료"
-        app:layout_constraintStart_toStartOf="@+id/priceEditText"
-        app:layout_constraintTop_toBottomOf="@+id/priceEditText" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/titleEditText"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
