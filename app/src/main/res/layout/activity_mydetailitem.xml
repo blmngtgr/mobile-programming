@@ -41,10 +41,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="20dp"
-        android:hint="글 제목"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/photoImageView"
+        app:layout_constraintTop_toBottomOf="@+id/radioStatus"
         android:textSize="18sp" />
 
     <TextView
@@ -53,7 +52,6 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="20dp"
-        android:hint="가격"
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,10 +65,20 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/hansung"
-        android:text="seller"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/priceText"
+        app:layout_constraintTop_toBottomOf="@+id/priceText" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seller"
         android:textSize="18sp" />
 
     <!--    Button은 theme에 의해 배경색이 고정된 컴포넌트이므로 배경색을 바꾸려면 background가 아니라 backgroundTint를 바꿔줘야 적용됨-->
@@ -85,13 +93,13 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
 
     <Button
-        android:id="@+id/updateButton"
+        android:id="@+id/chatButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/hansung"
-        android:text="수정하기"
+        android:text="채팅하기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -113,12 +121,13 @@
         android:id="@+id/radioStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:clickable="false"
         android:enabled="false"
         android:text="판매완료"
-        app:layout_constraintStart_toStartOf="@+id/priceText"
-        app:layout_constraintTop_toBottomOf="@+id/seller" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photoImageView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
