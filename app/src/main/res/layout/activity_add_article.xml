@@ -47,6 +47,17 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
 
     <EditText
+        android:id="@+id/contentEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="50dp"
+        android:hint="세부 내용"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleEditText" />
+
+    <EditText
         android:id="@+id/priceEditText"
         android:layout_width="0dp"
         android:inputType="numberDecimal"
