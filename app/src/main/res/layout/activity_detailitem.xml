@@ -43,8 +43,10 @@
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/photoImageView"
-        android:textSize="18sp" />
+        app:layout_constraintTop_toBottomOf="@+id/radioStatus"
+        android:textSize="24sp"
+        android:textColor="#333"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/priceText"
@@ -56,7 +58,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleText"
-        android:textSize="18sp" />
+        android:textSize="20sp"
+        android:textColor="#333"/>
 
     <TextView
         android:id="@+id/seller"
@@ -69,6 +72,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/priceText" />
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seller"
+        android:textSize="18sp" />
 
     <!--    Button은 theme에 의해 배경색이 고정된 컴포넌트이므로 배경색을 바꾸려면 background가 아니라 backgroundTint를 바꿔줘야 적용됨-->
     <ImageView
@@ -116,7 +130,7 @@
         android:enabled="false"
         android:text="판매완료"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seller" />
+        app:layout_constraintTop_toBottomOf="@+id/photoImageView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
