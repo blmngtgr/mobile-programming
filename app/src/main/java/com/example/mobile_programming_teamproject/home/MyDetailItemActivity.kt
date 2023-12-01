@@ -1,77 +1,133 @@
-package com.example.mobile_programming_teamproject.home
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tool="http://schemas.android.com/tools">
 
-import android.content.Intent
-import android.os.Bundle
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.example.mobile_programming_teamproject.DBKey
-import com.example.mobile_programming_teamproject.R
-import com.example.mobile_programming_teamproject.chatList.ChatListItem
-import com.example.mobile_programming_teamproject.chatdata.ChatRoomActivity
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+    <LinearLayout
+        android:id="@+id/toolbarLayout"
+        android:layout_width="0dp"
+        android:layout_height="?actionBarSize"
+        android:layout_marginTop="4dp"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-// MyDetailItemActivity 클래스 내의 onCreate 함수
-class MyDetailItemActivity : AppCompatActivity() {
-    private val auth: FirebaseAuth by lazy {
-        Firebase.auth
-    }
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="판매 글 보기"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
-    private lateinit var userDB: DatabaseReference
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_mydetailitem)
+    <View
+        android:id="@+id/toolbarUnderLineView"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/gray_cc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
 
-        // 받은 정보
-        val receivedArticleKey = intent.getStringExtra("articleKey")
-        val articleModel = ArticleModel()
-        // 여기에서 articleKey를 사용하여 해당 모델을 가져와야 합니다.
-        userDB = Firebase.database.reference.child("your_user_node")
-        // 레이아웃 내의 각각의 뷰에 정보 설정
-        val titleText = findViewById<TextView>(R.id.titleText)
-        titleText.text = intent.getStringExtra("title")
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioStatus"
+        android:textSize="18sp" />
 
-        val priceText = findViewById<TextView>(R.id.priceText)
-        priceText.text = intent.getStringExtra("price")
+    <TextView
+        android:id="@+id/priceText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        android:inputType="numberDecimal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleText"
+        android:textSize="18sp" />
 
-        val seller = findViewById<TextView>(R.id.seller)
-        seller.text = intent.getStringExtra("sellerID")
+    <TextView
+        android:id="@+id/seller"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/hansung"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceText" />
 
-        val receivedStatus = intent.getBooleanExtra("status", false)
-        val radioStatus = findViewById<RadioButton>(R.id.radioStatus)
-        radioStatus.isChecked = receivedStatus
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seller"
+        android:textSize="18sp" />
 
-        // 채팅 버튼 클릭 시, 해당 판매자와 채팅하는 로직 작성
+    <!--    Button은 theme에 의해 배경색이 고정된 컴포넌트이므로 배경색을 바꾸려면 background가 아니라 backgroundTint를 바꿔줘야 적용됨-->
+    <ImageView
+        android:id="@+id/photoImageView"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout" />
 
-        val updateButton = findViewById<Button>(R.id.updateButton)
-        updateButton.setOnClickListener {
-            val chatRoom = ChatListItem(
-                buyerId = auth.currentUser!!.uid,
-                sellerId = articleModel.sellerID,
-                itemTitle = articleModel.title,
-                key = System.currentTimeMillis(),
-            )
+    <Button
+        android:id="@+id/chatButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/hansung"
+        android:text="채팅하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-            userDB.child(auth.currentUser!!.uid)
-                .child(DBKey.CHILD_CHAT)
-                .push()
-                .setValue(chatRoom)
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.254"
+        tool:visibility="visible" />
 
-            userDB.child(articleModel.sellerID)
-                .child(DBKey.CHILD_CHAT)
-                .push()
-                .setValue(chatRoom)
-            //Snackbar.make(updateButton,"수정페이지.", Snackbar.LENGTH_LONG).show()
-            val intent = Intent(this, EditArticleActivity::class.java)
-            // 필요한 정보가 있다면 여기에 추가할 수 있음
-            intent.putExtra("articleKey", articleModel.articleKey)
-            startActivity(intent)
-        }
-    }
-}
+    <RadioButton
+        android:id="@+id/radioStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:clickable="false"
+        android:enabled="false"
+        android:text="판매완료"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photoImageView" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
