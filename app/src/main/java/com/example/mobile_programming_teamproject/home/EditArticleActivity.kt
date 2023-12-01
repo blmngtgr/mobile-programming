@@ -101,13 +101,13 @@ class EditArticleActivity : AppCompatActivity() {
         updatedValues["imageUrl"] = imageUrl
         updatedValues["createdAt"] = System.currentTimeMillis()
         if(findViewById<RadioButton>(R.id.radioStatus).isChecked) {
-            updatedValues["status"] = false
-        } else { updatedValues["status"] = true
-            articleDB.child(articleKey).updateChildren(updatedValues).addOnCompleteListener { task ->
-                if(task.isSuccessful) {
-                    hideProgress()
-                    finish()
-                }
+            updatedValues["status"] = true
+        } else { updatedValues["status"] = false
+        }
+        articleDB.child(articleKey).updateChildren(updatedValues).addOnCompleteListener { task ->
+            if(task.isSuccessful) {
+                hideProgress()
+                finish()
             }
         }
     }

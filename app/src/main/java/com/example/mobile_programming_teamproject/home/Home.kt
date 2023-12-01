@@ -82,12 +82,8 @@ class Home : Fragment(R.layout.fragment_home) {
                     startActivity(intent)
                 }
                 else { //내가 올린 아이템일 때
-                    val intent = Intent(requireContext(), MyDetailItemActivity::class.java)
+                    val intent = Intent(requireContext(), EditArticleActivity::class.java)
                     intent.putExtra("articleKey", articleModel.articleKey)
-                    intent.putExtra("title", articleModel.title)
-                    intent.putExtra("price", articleModel.price)
-                    intent.putExtra("sellerID", articleModel.sellerID)
-                    intent.putExtra("status", articleModel.status)
                     startActivity(intent)
                 }
             }

@@ -70,6 +70,7 @@ class MyDetailItemActivity : AppCompatActivity() {
             //Snackbar.make(updateButton,"수정페이지.", Snackbar.LENGTH_LONG).show()
             val intent = Intent(this, EditArticleActivity::class.java)
             // 필요한 정보가 있다면 여기에 추가할 수 있음
+            intent.putExtra("articleKey", articleModel.articleKey)
             startActivity(intent)
         }
     }
