@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.mobile_programming_teamproject.DBKey
 import com.example.mobile_programming_teamproject.R
@@ -57,22 +56,23 @@ class EditArticleActivity : AppCompatActivity() {
         findViewById<Button>(R.id.submitButton).setOnClickListener {
             val title = findViewById<EditText>(R.id.titleEditText).text.toString().orEmpty()
             val price = findViewById<EditText>(R.id.priceEditText).text.toString().orEmpty()
+            val content = findViewById<EditText>(R.id.contentEditText).text.toString().orEmpty()
             val sellerId = auth.currentUser?.uid.orEmpty()
 
             showProgress()
 
             if(selectedUri != null) {
                 val PhotoUri = selectedUri ?: return@setOnClickListener
-                uploadPhoto(PhotoUri, successHandler = { uri -> updateArticle(articleKey,sellerId, title, price, uri,false)},
+                uploadPhoto(PhotoUri, successHandler = { uri -> updateArticle(articleKey,sellerId, title, price, content, uri,false)},
                     errorHandler = { Toast.makeText(this, "사진 업로드에 실패했습니다.", Toast.LENGTH_SHORT)
                         hideProgress()})
             }
             else {
                 if(findViewById<RadioButton>(R.id.radioStatus).isChecked) {
-                    updateArticle(articleKey, sellerId, title, price, "", false)
+                    updateArticle(articleKey, sellerId, title, price, content, "", false)
                 }
                 else {
-                    updateArticle(articleKey, sellerId, title, price, "", true)
+                    updateArticle(articleKey, sellerId, title, price, content, "", true)
                 }
             }
         }
@@ -94,10 +94,11 @@ class EditArticleActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateArticle(articleKey: String, sellerId: String, title: String, price: String, imageUrl: String, status: Boolean) {
+    private fun updateArticle(articleKey: String, sellerId: String, title: String, price: String, content: String, imageUrl: String, status: Boolean) {
         val updatedValues = HashMap<String, Any>()
         updatedValues["title"] = title
         updatedValues["price"] = "$price 원"
+        updatedValues["content"] = content
         updatedValues["imageUrl"] = imageUrl
         updatedValues["createdAt"] = System.currentTimeMillis()
         if(findViewById<RadioButton>(R.id.radioStatus).isChecked) {
