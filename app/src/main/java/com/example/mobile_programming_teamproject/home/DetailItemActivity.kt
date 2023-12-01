@@ -48,6 +48,9 @@ class DetailItemActivity : AppCompatActivity() {
             val priceText = findViewById<TextView>(R.id.priceText)
             priceText.text = intent.getStringExtra("price")
 
+            val contentText = findViewById<TextView>(R.id.content)
+            contentText.text = articleModel.content
+
             val seller = findViewById<TextView>(R.id.seller)
             seller.text = intent.getStringExtra("sellerID")
 
