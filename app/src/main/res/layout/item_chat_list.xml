@@ -15,16 +15,3 @@
 
 </LinearLayout>
 
-    <!-- 메시지 보낸 시각
-    <TextView
-        android:layout_height="wrap_content"
-        android:id="@+id/timeTextView"
-        android:textSize="12sp"
-        android:textColor="#888"
-        app:layout_constraintStart_toStartOf="@+id/messageTextView"
-        app:layout_constraintTop_toBottomOf="@+id/messageTextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_width="wrap_content"
-
-        tools:text="12:34 PM" />
-        -->

@@ -84,7 +84,6 @@
         app:layout_constraintTop_toBottomOf="@+id/seller"
         android:textSize="18sp" />
 
-    <!--    Button은 theme에 의해 배경색이 고정된 컴포넌트이므로 배경색을 바꾸려면 background가 아니라 backgroundTint를 바꿔줘야 적용됨-->
     <ImageView
         android:id="@+id/photoImageView"
         android:layout_width="250dp"
