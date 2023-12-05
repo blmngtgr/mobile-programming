@@ -74,9 +74,7 @@ class DetailItemActivity : AppCompatActivity() {
                     .setValue(chatRoom)
 
                 Snackbar.make(chatButton,"채팅방이 생성되었습니다.", Snackbar.LENGTH_LONG).show()
-//
-//                val intent = Intent(this, ChatRoomActivity::class.java)
-//                startActivity(intent)
+
             }
         }
     }

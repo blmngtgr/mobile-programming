@@ -68,7 +68,7 @@ class Home : Fragment(R.layout.fragment_home) {
         itemDB = Firebase.database.reference.child(DB_ITEMS)
         userDB = Firebase.database.reference.child(DB_USERS)
         itemAdapter = ItemAdapter(onItemClicked = { itemModel->
-            if(auth.currentUser != null) { // 로그인 상태
+            if(auth.currentUser != null) {
                 if(auth.currentUser!!.uid != itemModel.sellerID) {
                     val intent = Intent(requireContext(), DetailItemActivity::class.java)
                     intent.putExtra("itemKey", itemModel.itemKey)
@@ -78,14 +78,14 @@ class Home : Fragment(R.layout.fragment_home) {
                     intent.putExtra("status", itemModel.status)
                     startActivity(intent)
                 }
-                else { //내가 올린 아이템일 때
+                else {
                     val intent = Intent(requireContext(), EditItemActivity::class.java)
                     intent.putExtra("itemKey", itemModel.itemKey)
                     startActivity(intent)
                 }
             }
-            else { //로그인하지 않은 상태
-                Snackbar.make(view, "회원만 이용 가능합니다.", Snackbar.LENGTH_LONG).show()
+            else {
+                Snackbar.make(view, "회원가입 후 이용해주세요.", Snackbar.LENGTH_LONG).show()
             }
         })
 
@@ -98,7 +98,7 @@ class Home : Fragment(R.layout.fragment_home) {
                 startActivity(intent)
             }
             else{
-                Snackbar.make(view, "회원만 이용 가능합니다.", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(view, "회원가입 후 이용해주세요", Snackbar.LENGTH_LONG).show()
             }
         }
         itemDB.addChildEventListener(listener)
@@ -114,14 +114,15 @@ class Home : Fragment(R.layout.fragment_home) {
 
     }
 
-    private fun loadAllItems() {
-        itemAdapter.submitList(itemList)
-    }
-
     private fun loadSaleItems() {
         val saleItemList = itemList.filter { !it.status }
         itemAdapter.submitList(saleItemList)
     }
+
+    private fun loadAllItems() {
+        itemAdapter.submitList(itemList)
+    }
+
 
     override fun onResume() {
         super.onResume()

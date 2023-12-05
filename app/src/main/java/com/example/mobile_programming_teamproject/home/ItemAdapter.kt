@@ -30,17 +30,17 @@ class ItemAdapter(val onItemClicked: (ItemModel) -> Unit) : ListAdapter<ItemMode
             }
         }
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemArticleBinding.inflate(LayoutInflater.from(parent.context),parent,false))
-    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        return ViewHolder(ItemArticleBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+    }
+
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<ItemModel>() {
-            //기존의 아이템과 같은지 확인
             override fun areItemsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean {
                 return oldItem.createdAt == newItem.createdAt
             }

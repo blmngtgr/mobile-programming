@@ -49,15 +49,6 @@ class AddItemActivity : AppCompatActivity() {
          }
     }
 
-    private fun uploadItem(sellerId: String, title: String, content: String, price: String, imageUrl: String, status: Boolean) {
-        val model = ItemModel(sellerId, title, content, System.currentTimeMillis(), "$price 원", imageUrl, status)
-        ItemDB.push().setValue(model)
-
-        hideProgress()
-
-        finish()
-    }
-
 
     private fun showProgress() {
         findViewById<ProgressBar>(R.id.progressBar).isVisible = true
@@ -67,5 +58,12 @@ class AddItemActivity : AppCompatActivity() {
         findViewById<ProgressBar>(R.id.progressBar).isVisible = false
     }
 
+    private fun uploadItem(sellerId: String, title: String, content: String, price: String, imageUrl: String, status: Boolean) {
+        val model = ItemModel(sellerId, title, content, System.currentTimeMillis(), "$price 원", imageUrl, status)
+        ItemDB.push().setValue(model)
 
+        hideProgress()
+
+        finish()
+    }
 }

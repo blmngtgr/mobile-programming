@@ -53,6 +53,15 @@ class EditItemActivity : AppCompatActivity() {
     }
 
 
+
+    private fun showProgress() {
+        findViewById<ProgressBar>(R.id.progressBar).isVisible = true
+    }
+
+    private fun hideProgress() {
+        findViewById<ProgressBar>(R.id.progressBar).isVisible = false
+    }
+
     private fun updateItem(itemKey: String, sellerId: String, title: String, price: String, content: String, imageUrl: String, status: Boolean) {
         val updatedValues = HashMap<String, Any>()
         updatedValues["title"] = title
@@ -70,17 +79,6 @@ class EditItemActivity : AppCompatActivity() {
                 finish()
             }
         }
-    }
-
-
-
-
-    private fun showProgress() {
-        findViewById<ProgressBar>(R.id.progressBar).isVisible = true
-    }
-
-    private fun hideProgress() {
-        findViewById<ProgressBar>(R.id.progressBar).isVisible = false
     }
 
 }
