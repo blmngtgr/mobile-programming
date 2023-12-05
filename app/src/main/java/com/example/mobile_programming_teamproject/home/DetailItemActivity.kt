@@ -1,19 +1,15 @@
 
 package com.example.mobile_programming_teamproject.home
-import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mobile_programming_teamproject.DBKey
-import com.example.mobile_programming_teamproject.DBKey.Companion.DB_ARTICLES
+import com.example.mobile_programming_teamproject.DBKey.Companion.DB_ITEMS
 import com.example.mobile_programming_teamproject.DBKey.Companion.DB_USERS
 import com.example.mobile_programming_teamproject.R
 import com.example.mobile_programming_teamproject.chatList.ChatListItem
-import com.example.mobile_programming_teamproject.chatdata.ChatRoomActivity
-import com.example.mobile_programming_teamproject.home.ArticleModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -26,19 +22,19 @@ class DetailItemActivity : AppCompatActivity() {
     private val auth: FirebaseAuth by lazy {
         Firebase.auth
     }
-    private lateinit var articleDB: DatabaseReference
+    private lateinit var ItemDB: DatabaseReference
     private lateinit var userDB: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detailitem)
 
-        val receivedArticleKey = intent.getStringExtra("articleKey")
+        val receivedItemKey = intent.getStringExtra("itemKey")
         userDB = Firebase.database.reference.child(DB_USERS)
-        articleDB = Firebase.database.reference.child(DB_ARTICLES).child(receivedArticleKey!!)
+        ItemDB = Firebase.database.reference.child(DB_ITEMS).child(receivedItemKey!!)
 
-        articleDB.get().addOnSuccessListener { snapshot ->
-            val articleModel = snapshot.getValue(ArticleModel::class.java) ?: return@addOnSuccessListener
+        ItemDB.get().addOnSuccessListener { snapshot ->
+            val itemModel = snapshot.getValue(ItemModel::class.java) ?: return@addOnSuccessListener
 
             userDB = Firebase.database.reference.child(DB_USERS)
             // 레이아웃 내의 각각의 뷰에 정보 설정
@@ -49,7 +45,7 @@ class DetailItemActivity : AppCompatActivity() {
             priceText.text = intent.getStringExtra("price")
 
             val contentText = findViewById<TextView>(R.id.content)
-            contentText.text = articleModel.content
+            contentText.text = itemModel.content
 
             val seller = findViewById<TextView>(R.id.seller)
             seller.text = intent.getStringExtra("sellerID")
@@ -62,8 +58,8 @@ class DetailItemActivity : AppCompatActivity() {
             chatButton.setOnClickListener {
                 val chatRoom = ChatListItem(
                     buyerId = auth.currentUser!!.uid,
-                    sellerId = articleModel.sellerID,
-                    itemTitle = articleModel.title,
+                    sellerId = itemModel.sellerID,
+                    itemTitle = itemModel.title,
                     key = System.currentTimeMillis(),
                 )
 
@@ -72,7 +68,7 @@ class DetailItemActivity : AppCompatActivity() {
                     .push()
                     .setValue(chatRoom)
 
-                userDB.child(articleModel.sellerID)
+                userDB.child(itemModel.sellerID)
                     .child(DBKey.CHILD_CHAT)
                     .push()
                     .setValue(chatRoom)

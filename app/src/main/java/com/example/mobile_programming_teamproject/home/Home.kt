@@ -5,12 +5,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.mobile_programming_teamproject.DBKey
-import com.example.mobile_programming_teamproject.DBKey.Companion.CHILD_CHAT
-import com.example.mobile_programming_teamproject.DBKey.Companion.DB_ARTICLES
+import com.example.mobile_programming_teamproject.DBKey.Companion.DB_ITEMS
 import com.example.mobile_programming_teamproject.DBKey.Companion.DB_USERS
 import com.example.mobile_programming_teamproject.R
-import com.example.mobile_programming_teamproject.chatList.ChatListItem
 import com.example.mobile_programming_teamproject.databinding.FragmentHomeBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -25,30 +22,30 @@ import com.google.firebase.ktx.Firebase
 class Home : Fragment(R.layout.fragment_home) {
 
 
-    private lateinit var articleAdapter: ArticleAdapter
-    private lateinit var articleDB: DatabaseReference
+    private lateinit var itemAdapter: ItemAdapter
+    private lateinit var itemDB: DatabaseReference
     private lateinit var userDB: DatabaseReference
 
-    private val articleList = mutableListOf<ArticleModel>()
+    private val itemList = mutableListOf<ItemModel>()
 
     private val listener = object : ChildEventListener {
         override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-            val articleModel = snapshot.getValue(ArticleModel::class.java)
-            articleModel ?: return
-            articleModel.articleKey = snapshot.key
+            val itemModel = snapshot.getValue(ItemModel::class.java)
+            itemModel ?: return
+            itemModel.itemKey = snapshot.key
 
-            articleList.add(articleModel)
-            articleAdapter.submitList(articleList)
+            itemList.add(itemModel)
+            itemAdapter.submitList(itemList)
         }
 
         override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-            val articleModel = snapshot.getValue(ArticleModel::class.java) ?: return
-            articleModel.articleKey = snapshot.key
+            val itemModel = snapshot.getValue(ItemModel::class.java) ?: return
+            itemModel.itemKey = snapshot.key
 
-            val position = articleList.indexOfFirst { it.articleKey == articleModel.articleKey }
+            val position = itemList.indexOfFirst { it.itemKey == itemModel.itemKey }
             if (position > -1) {
-                articleList[position] = articleModel
-                articleAdapter.notifyItemChanged(position)
+                itemList[position] = itemModel
+                itemAdapter.notifyItemChanged(position)
             }
         }
         override fun onChildRemoved(snapshot: DataSnapshot) {}
@@ -66,24 +63,24 @@ class Home : Fragment(R.layout.fragment_home) {
         val fragmentHoneBinding = FragmentHomeBinding.bind(view)
         binding = fragmentHoneBinding
 
-        articleList.clear()
+        itemList.clear()
 
-        articleDB = Firebase.database.reference.child(DB_ARTICLES)
+        itemDB = Firebase.database.reference.child(DB_ITEMS)
         userDB = Firebase.database.reference.child(DB_USERS)
-        articleAdapter = ArticleAdapter(onItemClicked = { articleModel->
+        itemAdapter = ItemAdapter(onItemClicked = { itemModel->
             if(auth.currentUser != null) { // 로그인 상태
-                if(auth.currentUser!!.uid != articleModel.sellerID) {
+                if(auth.currentUser!!.uid != itemModel.sellerID) {
                     val intent = Intent(requireContext(), DetailItemActivity::class.java)
-                    intent.putExtra("articleKey", articleModel.articleKey)
-                    intent.putExtra("title", articleModel.title)
-                    intent.putExtra("price", articleModel.price)
-                    intent.putExtra("sellerID", articleModel.sellerID)
-                    intent.putExtra("status", articleModel.status)
+                    intent.putExtra("itemKey", itemModel.itemKey)
+                    intent.putExtra("title", itemModel.title)
+                    intent.putExtra("price", itemModel.price)
+                    intent.putExtra("sellerID", itemModel.sellerID)
+                    intent.putExtra("status", itemModel.status)
                     startActivity(intent)
                 }
                 else { //내가 올린 아이템일 때
-                    val intent = Intent(requireContext(), EditArticleActivity::class.java)
-                    intent.putExtra("articleKey", articleModel.articleKey)
+                    val intent = Intent(requireContext(), EditItemActivity::class.java)
+                    intent.putExtra("itemKey", itemModel.itemKey)
                     startActivity(intent)
                 }
             }
@@ -93,47 +90,47 @@ class Home : Fragment(R.layout.fragment_home) {
         })
 
         fragmentHoneBinding.articleRecyclerView.layoutManager = LinearLayoutManager(context)
-        fragmentHoneBinding.articleRecyclerView.adapter = articleAdapter
+        fragmentHoneBinding.articleRecyclerView.adapter = itemAdapter
 
         fragmentHoneBinding.addFloatingButton.setOnClickListener {
             if(auth.currentUser != null) {
-                val intent = Intent(requireContext(), AddArticleActivity::class.java)
+                val intent = Intent(requireContext(), AddItemActivity::class.java)
                 startActivity(intent)
             }
             else{
                 Snackbar.make(view, "회원만 이용 가능합니다.", Snackbar.LENGTH_LONG).show()
             }
         }
-        articleDB.addChildEventListener(listener)
+        itemDB.addChildEventListener(listener)
 
         fragmentHoneBinding.radioAll.setOnClickListener {
-            loadAllArticles() // 모든 판매 여부 항목을 표시하는 함수 호출
+            loadAllItems()
         }
 
         fragmentHoneBinding.radioSale.setOnClickListener {
-            loadSaleArticles() // 판매 여부가 false인 항목만 표시하는 함수 호출
+            loadSaleItems()
         }
 
-        //loadAllArticles()
+
     }
 
-    private fun loadAllArticles() {
-        articleAdapter.submitList(articleList) // 모든 판매 항목을 RecyclerView에 전달
+    private fun loadAllItems() {
+        itemAdapter.submitList(itemList)
     }
 
-    private fun loadSaleArticles() {
-        val saleArticleList = articleList.filter { !it.status } // 판매 여부가 false인 항목만 필터링
-        articleAdapter.submitList(saleArticleList) // 필터링된 항목을 RecyclerView에 전달
+    private fun loadSaleItems() {
+        val saleItemList = itemList.filter { !it.status }
+        itemAdapter.submitList(saleItemList)
     }
 
     override fun onResume() {
         super.onResume()
-        articleAdapter.notifyDataSetChanged()
+        itemAdapter.notifyDataSetChanged()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        articleDB.removeEventListener(listener)
+        itemDB.removeEventListener(listener)
 
     }
 }
